@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<title>Smart Agro Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial;
+  background:#e8f5e9;
+  padding:15px;
+}
+h2{
+  text-align:center;
+  color:green;
+}
+label{
+  font-weight:bold;
+}
+input, button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  font-size:16px;
+}
+button{
+  background:green;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+#result{
+  background:white;
+  padding:12px;
+  margin-top:12px;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🌱 स्मार्ट अ‍ॅग्रो कॅल्क्युलेटर</h2>
+
+<label>शेतीचे क्षेत्रफळ (एकर):</label>
+<input type="number" id="area" step="0.1" placeholder="उदा. 2">
+
+<label>मातीचा pH:</label>
+<input type="number" id="ph" step="0.1" placeholder="उदा. 6.5">
+
+<label>मातीची ओल (%):</label>
+<input type="number" id="moisture" placeholder="उदा. 45">
+
+<label>तापमान (°C):</label>
+<input type="number" id="temp" placeholder="उदा. 32">
+
+<label>प्रकाश पातळी (Lux):</label>
+<input type="number" id="light" placeholder="उदा. 25000">
+
+<button onclick="calculate()">सल्ला मिळवा</button>
+
+<div id="result"></div>
+
+<script>
+function calculate(){
+
+let area = parseFloat(document.getElementById("area").value);
+let ph = parseFloat(document.getElementById("ph").value);
+let moisture = parseInt(document.getElementById("moisture").value);
+let temp = parseInt(document.getElementById("temp").value);
+let light = parseInt(document.getElementById("light").value);
+
+let msg = "";
+
+/* Soil Analysis */
+msg += "<b>🌍 माती विश्लेषण:</b><br>";
+if(ph < 6){
+  msg += "⚠ माती आम्लीय आहे<br>";
+}
+else if(ph <= 7){
+  msg += "✔ माती योग्य आहे<br>";
+}
+else{
+  msg += "⚠ माती क्षारीय आहे<br>";
+}
+
+/* Water Advice */
+msg += "<br><b>💧 पाणी सल्ला:</b><br>";
+if(moisture < 40){
+  msg += "➡ पाणी द्या (माती कोरडी आहे)<br>";
+}
+else{
+  msg += "✔ पाणी पुरेसे आहे<br>";
+}
+
+/* Fertilizer Calculation */
+msg += "<br><b>🧪 खत गणना (Area-wise):</b><br>";
+
+if(ph < 6){
+  msg += `➡ चुना / डोलोमाइट: <b>${250 * area} kg</b><br>`;
+}
+else if(ph <= 7){
+  msg += `➡ NPK 10:26:26: <b>${50 * area} kg</b><br>`;
+}
+else{
+  msg += `➡ सेंद्रिय खत: <b>${1000 * area} kg</b><br>`;
+}
+
+/* Light Based Crop */
+msg += "<br><b>🌞 प्रकाशावर आधारित पीक:</b><br>";
+
+if(light >= 20000 && light <= 30000){
+  msg += "✔ भात / कांदा (20k–30k lux)<br>";
+}
+else if(light >= 15000 && light < 20000){
+  msg += "✔ गहू / पालक (15k–20k lux)<br>";
+}
+else if(light > 30000){
+  msg += "✔ मका / टोमॅटो (30k+ lux)<br>";
+}
+else{
+  msg += "⚠ कमी प्रकाश – सावलीतील पिके योग्य<br>";
+}
+
+/* Temperature */
+msg += "<br><b>🌡 तापमान:</b><br>";
+if(temp > 35){
+  msg += "⚠ जास्त उष्णता – पाणी जपून वापरा<br>";
+}
+else{
+  msg += "✔ तापमान योग्य आहे<br>";
+}
+
+document.getElementById("result").innerHTML = msg;
+}
+</script>
+
+</body>
+</html>
